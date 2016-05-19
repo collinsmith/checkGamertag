@@ -86,16 +86,16 @@ public class CheckGamertag {
             return EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             e.printStackTrace();
+            return e.getMessage();
         } finally {
             if (response != null) {
                 try {
                     response.close();
                 } catch (IOException e) {
+                    return e.getMessage();
                 }
             }
         }
-        
-        return null;
     }
     
     public enum EmailMethod { SSL, TLS }
