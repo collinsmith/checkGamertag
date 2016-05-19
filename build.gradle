@@ -1,0 +1,54 @@
+apply plugin: 'java'
+
+version = '1.0'
+
+ext {
+    appName = "CheckGamertag"
+    mainClassName = 'com.gmail.collinsmith70.xbox.CheckGamertag'
+}
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = ext.mainClassName
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': appName,
+                   'Implementation-Version': version,
+                   'Main-Class': mainClassName
+    }
+}
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+	manifest {
+            attributes 'Implementation-Title': appName, 'Implementation-Version': version
+            attributes 'Main-Class': mainClassName
+	}
+}
+
+task runApp(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.gmail.collinsmith70.xbox.CheckGamertag'
+    args = ['Tirant','Tyrant']
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-collections4:4.+'
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
+    compile 'javax.mail:mail:1.5.0-b01'
+}
