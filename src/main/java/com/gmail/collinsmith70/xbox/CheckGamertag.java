@@ -36,7 +36,19 @@ public class CheckGamertag {
             = new SimpleDateFormat("HH:mm:ss.SSS");
     
     public static void main(String[] args) {
-        int delay = Integer.parseInt(args[0]);
+        if (args.length < 4) {
+            System.out.println("Usage: <CheckGamertag>.jar "
+                    + "<delay> <gmail> <app_password> <gamertag> ...");
+            System.exit(0);
+        }
+        
+        int delay = 1000;
+        try {
+            delay = Integer.parseInt(args[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid delay specified: " + args[0]);
+        }
+        
         String gmail = args[1];
         String password = args[2];
         List<String> gamertags = new ArrayList<>(
@@ -64,7 +76,10 @@ public class CheckGamertag {
                         it.remove();
                         break;
                     default:
-                        System.out.println("Unexpected response: " + response);
+                        if (DEBUG) {
+                            System.out.println("Unexpected response: " + response);
+                        }
+                        
                         break;
                 }
             }
@@ -72,7 +87,9 @@ public class CheckGamertag {
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                if (DEBUG) {
+                    e.printStackTrace();
+                }
             } finally {
                 continue;
             }
@@ -94,7 +111,6 @@ public class CheckGamertag {
             response = client.execute(post);
             return EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
-            e.printStackTrace();
             return e.getMessage();
         } finally {
             if (response != null) {
