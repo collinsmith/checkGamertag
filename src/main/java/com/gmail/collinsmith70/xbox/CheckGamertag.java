@@ -1,10 +1,14 @@
 package com.gmail.collinsmith70.xbox;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -28,6 +32,9 @@ public class CheckGamertag {
     private static final String ENDPOINT
             = "http://checkgamertag.com/CheckGamertag.php";
     
+    private static final DateFormat TIMESTAMP
+            = new SimpleDateFormat("HH:mm:ss.SSS");
+    
     public static void main(String[] args) {
         int delay = Integer.parseInt(args[0]);
         String gmail = args[1];
@@ -38,7 +45,8 @@ public class CheckGamertag {
             for (Iterator<String> it = gamertags.iterator();
                     it.hasNext();) {
                 String gamertag = it.next();
-                System.out.print("Checking " + gamertag + "... ");
+                System.out.printf(Locale.ROOT, "[%s] Checking %s... ",
+                        TIMESTAMP.format(new Date()), gamertag);
                 System.out.flush();
                 String response = checkGamertag(gamertag);
                 switch (response) {
