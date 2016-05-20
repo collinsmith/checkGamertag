@@ -29,10 +29,11 @@ public class CheckGamertag {
             = "http://checkgamertag.com/CheckGamertag.php";
     
     public static void main(String[] args) {
-        String gmail = args[0];
-        String password = args[1];
+        int delay = Integer.parseInt(args[0]);
+        String gmail = args[1];
+        String password = args[2];
         List<String> gamertags = new ArrayList<>(
-                Arrays.asList(args).subList(2, args.length));
+                Arrays.asList(args).subList(3, args.length));
         while (!gamertags.isEmpty()) {
             for (Iterator<String> it = gamertags.iterator();
                     it.hasNext();) {
@@ -61,7 +62,7 @@ public class CheckGamertag {
             }
             
             try {
-                Thread.sleep(1000);
+                Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
